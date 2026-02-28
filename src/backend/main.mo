@@ -5,8 +5,10 @@ import Int "mo:core/Int";
 import Float "mo:core/Float";
 import Time "mo:core/Time";
 import Order "mo:core/Order";
-import Runtime "mo:core/Runtime";
+import Migration "migration";
+import Nat "mo:core/Nat";
 
+(with migration = Migration.run)
 actor {
   // Types
   type Video = {
@@ -173,11 +175,15 @@ actor {
     switch (rooms.get(roomCode)) {
       case (null) { #err("Room does not exist") };
       case (?room) {
+        let addedBy = switch (room.users.find(func(user) { user.id == userId })) {
+          case (null) { userId };
+          case (?user) { user.nickname };
+        };
         let video : Video = {
           videoId;
           title;
           thumbnail;
-          addedBy = userId;
+          addedBy; // use nickname if found, otherwise userId
         };
 
         let updatedRoom = switch (room.currentVideo) {
@@ -198,7 +204,11 @@ actor {
           case (0) { #err("Queue is empty") };
           case (_) {
             let newCurrent = room.queue[0];
-            let newQueue = room.queue.sliceToArray(1, room.queue.size());
+            let newQueue = if (room.queue.size() > 1) {
+              room.queue.sliceToArray(1, room.queue.size());
+            } else {
+              [];
+            };
             let updatedRoom = {
               room with
               currentVideo = ?newCurrent;
@@ -220,7 +230,11 @@ actor {
           case (0) { #err("History is empty") };
           case (_) {
             let newCurrent = room.history[room.history.size() - 1];
-            let newHistory = room.history.sliceToArray(0, room.history.size() - 1);
+            let newHistory = if (room.history.size() > 1) {
+              room.history.sliceToArray(0, room.history.size() - 1);
+            } else {
+              [];
+            };
             let updatedRoom = {
               room with
               currentVideo = ?newCurrent;
@@ -242,7 +256,7 @@ actor {
       case (null) { #err("Room does not exist") };
       case (?room) {
         let nickname = switch (room.users.find(func(user) { user.id == userId })) {
-          case (null) { Runtime.trap("User not found in room") };
+          case (null) { userId };
           case (?user) { user.nickname };
         };
         let chatMessage : ChatMessage = {

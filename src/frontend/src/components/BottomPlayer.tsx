@@ -79,7 +79,7 @@ export default function BottomPlayer({ playerRef }: BottomPlayerProps) {
       if (result.__kind__ === "err") {
         toast.error(result.err);
       } else {
-        await refreshRoomState();
+        await refreshRoomState(true);
       }
     } catch {
       toast.error("Failed to update playback");
@@ -103,7 +103,7 @@ export default function BottomPlayer({ playerRef }: BottomPlayerProps) {
       if (result.__kind__ === "err") {
         toast.error(result.err || "No next video");
       } else {
-        await refreshRoomState();
+        await refreshRoomState(true);
       }
     } catch {
       toast.error("Failed to skip");
@@ -120,7 +120,7 @@ export default function BottomPlayer({ playerRef }: BottomPlayerProps) {
       if (result.__kind__ === "err") {
         toast.error(result.err || "No previous video");
       } else {
-        await refreshRoomState();
+        await refreshRoomState(true);
       }
     } catch {
       toast.error("Failed to go back");
@@ -148,7 +148,7 @@ export default function BottomPlayer({ playerRef }: BottomPlayerProps) {
     if (session && actor) {
       try {
         await actor.setPlayState(session.roomCode, isPlaying, newTime);
-        await refreshRoomState();
+        await refreshRoomState(true);
       } catch {
         // best effort
       }

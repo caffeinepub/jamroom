@@ -19,7 +19,7 @@ interface RoomContextType {
   actor: backendInterface | null;
   setSession: (session: JamSession | null) => void;
   setActivePage: (page: NavPage) => void;
-  refreshRoomState: () => Promise<void>;
+  refreshRoomState: (force?: boolean) => Promise<void>;
   leaveRoom: () => Promise<void>;
 }
 
@@ -68,24 +68,28 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const refreshRoomState = useCallback(async () => {
-    if (!session || !actor || isPollingRef.current) return;
-    isPollingRef.current = true;
-    try {
-      const result = await actor.getRoomState(session.roomCode);
-      if (result.__kind__ === "ok") {
-        setRoomState(result.ok as RoomState);
-      } else {
-        // Room not found, clear session
-        setSession(null);
-        setRoomState(null);
+  const refreshRoomState = useCallback(
+    async (force = false) => {
+      if (!session || !actor) return;
+      if (!force && isPollingRef.current) return;
+      isPollingRef.current = true;
+      try {
+        const result = await actor.getRoomState(session.roomCode);
+        if (result.__kind__ === "ok") {
+          setRoomState(result.ok as RoomState);
+        } else {
+          // Room not found, clear session
+          setSession(null);
+          setRoomState(null);
+        }
+      } catch {
+        // Network error, keep existing state
+      } finally {
+        isPollingRef.current = false;
       }
-    } catch {
-      // Network error, keep existing state
-    } finally {
-      isPollingRef.current = false;
-    }
-  }, [session, actor, setSession]);
+    },
+    [session, actor, setSession],
+  );
 
   const leaveRoom = useCallback(async () => {
     if (!session || !actor) return;

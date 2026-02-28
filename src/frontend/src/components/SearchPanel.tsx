@@ -111,7 +111,7 @@ export default function SearchPanel() {
         toast.success(
           `Added: ${result.title.slice(0, 40)}${result.title.length > 40 ? "..." : ""}`,
         );
-        await refreshRoomState();
+        await refreshRoomState(true);
       } else {
         toast.error(res.err || "Failed to add to queue");
       }

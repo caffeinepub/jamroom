@@ -11,8 +11,6 @@ const ii_url =
 process.env.II_URL = process.env.II_URL || ii_url;
 process.env.STORAGE_GATEWAY_URL =
   process.env.STORAGE_GATEWAY_URL || "https://blob.caffeine.ai";
-process.env.VITE_YOUTUBE_API_KEY =
-  process.env.VITE_YOUTUBE_API_KEY || "AIzaSyDYU08CjAg3y3WneseE9Y1AvGQiKeUPDOo";
 
 export default defineConfig({
   logLevel: "error",
@@ -44,7 +42,6 @@ export default defineConfig({
     environment("all", { prefix: "DFX_" }),
     environment(["II_URL"]),
     environment(["STORAGE_GATEWAY_URL"]),
-    environment(["VITE_YOUTUBE_API_KEY"]),
     react(),
   ],
   resolve: {

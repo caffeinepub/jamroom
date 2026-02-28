@@ -55,7 +55,7 @@ export default function ChatPanel({ onClose }: ChatPanelProps) {
         toast.error(result.err || "Failed to send");
         setMessage(text); // restore on error
       } else {
-        await refreshRoomState();
+        await refreshRoomState(true);
       }
     } catch {
       toast.error("Failed to send message");
