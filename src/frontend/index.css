@@ -1,0 +1,278 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/assets/fonts/CabinetGrotesk.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* JamRoom dark Spotify-inspired palette */
+    /* #121212 → oklch(0.148 0 0) */
+    --background: 0.148 0 0;
+    /* #FFFFFF */
+    --foreground: 0.98 0 0;
+
+    /* #1E1E1E */
+    --card: 0.175 0 0;
+    --card-foreground: 0.98 0 0;
+
+    /* #282828 */
+    --popover: 0.205 0 0;
+    --popover-foreground: 0.98 0 0;
+
+    /* Spotify green #1DB954 → oklch(0.672 0.187 150.5) */
+    --primary: 0.672 0.187 150.5;
+    --primary-foreground: 0.1 0 0;
+
+    /* #282828 */
+    --secondary: 0.205 0 0;
+    --secondary-foreground: 0.98 0 0;
+
+    /* #1E1E1E */
+    --muted: 0.175 0 0;
+    --muted-foreground: 0.55 0 0;
+
+    /* Spotify green accent */
+    --accent: 0.672 0.187 150.5;
+    --accent-foreground: 0.1 0 0;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Borders */
+    --border: 0.32 0 0;
+    --input: 0.24 0 0;
+    --ring: 0.672 0.187 150.5;
+
+    /* Charts */
+    --chart-1: 0.672 0.187 150.5;
+    --chart-2: 0.55 0.14 145;
+    --chart-3: 0.45 0 0;
+    --chart-4: 0.35 0 0;
+    --chart-5: 0.25 0 0;
+
+    /* Sidebar */
+    --sidebar: 0.12 0 0;
+    --sidebar-foreground: 0.98 0 0;
+    --sidebar-primary: 0.672 0.187 150.5;
+    --sidebar-primary-foreground: 0.1 0 0;
+    --sidebar-accent: 0.205 0 0;
+    --sidebar-accent-foreground: 0.98 0 0;
+    --sidebar-border: 0.22 0 0;
+    --sidebar-ring: 0.672 0.187 150.5;
+
+    /* JamRoom custom tokens */
+    --jamroom-bg: 0.148 0 0;
+    --jamroom-panel: 0.175 0 0;
+    --jamroom-panel-hover: 0.205 0 0;
+    --jamroom-elevated: 0.22 0 0;
+    --jamroom-green: 0.672 0.187 150.5;
+    --jamroom-green-dark: 0.55 0.15 150.5;
+    --jamroom-text-primary: 0.98 0 0;
+    --jamroom-text-secondary: 0.65 0 0;
+    --jamroom-text-dim: 0.45 0 0;
+    --jamroom-border: 0.28 0 0;
+    --jamroom-player-height: 80px;
+    --jamroom-sidebar-width: 220px;
+    --jamroom-queue-width: 280px;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Sora", "Cabinet Grotesk", sans-serif;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.32 0 0);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.42 0 0);
+  }
+
+  /* Progress range input */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    background: oklch(0.32 0 0);
+    height: 4px;
+    border-radius: 2px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: oklch(0.98 0 0);
+    margin-top: -4px;
+    transition: transform 0.1s ease;
+  }
+  input[type="range"]:hover::-webkit-slider-thumb {
+    background: oklch(0.672 0.187 150.5);
+    transform: scale(1.2);
+  }
+}
+
+@layer components {
+  .jamroom-glass {
+    background: oklch(0.175 0 0 / 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid oklch(0.32 0 0 / 0.5);
+  }
+
+  .jamroom-player-glass {
+    background: oklch(0.15 0 0 / 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid oklch(0.28 0 0 / 0.7);
+  }
+
+  .jamroom-sidebar {
+    background: oklch(0.12 0 0);
+    border-right: 1px solid oklch(0.22 0 0 / 0.5);
+  }
+
+  .jamroom-queue {
+    background: oklch(0.155 0 0);
+    border-left: 1px solid oklch(0.22 0 0 / 0.5);
+  }
+
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer select-none;
+    color: oklch(0.65 0 0);
+  }
+
+  .nav-item:hover {
+    color: oklch(0.98 0 0);
+    background: oklch(0.205 0 0 / 0.6);
+  }
+
+  .nav-item.active {
+    color: oklch(0.98 0 0);
+    background: oklch(0.205 0 0 / 0.8);
+  }
+
+  .nav-item.active svg {
+    color: oklch(0.672 0.187 150.5);
+  }
+
+  .progress-bar-track {
+    position: relative;
+    height: 4px;
+    background: oklch(0.32 0 0);
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: oklch(0.672 0.187 150.5);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+  }
+
+  .btn-icon {
+    @apply flex items-center justify-center rounded-full transition-all duration-150 cursor-pointer;
+    color: oklch(0.65 0 0);
+  }
+
+  .btn-icon:hover {
+    color: oklch(0.98 0 0);
+  }
+
+  .btn-play {
+    @apply flex items-center justify-center rounded-full cursor-pointer transition-all duration-150;
+    background: oklch(0.98 0 0);
+    color: oklch(0.1 0 0);
+    width: 36px;
+    height: 36px;
+  }
+
+  .btn-play:hover {
+    background: oklch(0.85 0 0);
+    transform: scale(1.05);
+  }
+
+  .btn-play:active {
+    transform: scale(0.97);
+  }
+
+  .queue-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer transition-all duration-150;
+  }
+
+  .queue-item:hover {
+    background: oklch(0.205 0 0 / 0.7);
+  }
+
+  .chat-bubble {
+    @apply px-3 py-2 rounded-xl text-sm;
+    background: oklch(0.205 0 0);
+    max-width: 85%;
+  }
+
+  .search-result-card {
+    @apply flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-150;
+  }
+
+  .search-result-card:hover {
+    background: oklch(0.205 0 0 / 0.8);
+  }
+
+  .gradient-banner {
+    background: linear-gradient(
+      135deg,
+      oklch(0.38 0.12 150.5) 0%,
+      oklch(0.28 0.08 150.5) 40%,
+      oklch(0.175 0 0) 100%
+    );
+  }
+}
